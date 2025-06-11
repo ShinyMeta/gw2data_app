@@ -8,7 +8,8 @@
     "prod_old": "concurrently  -n \"vuecli,server\" -c \"bgBlue.bold,bgGreen.bold\"  \"bnr client_prod\" \"bnr server_prod\"",
     "dev": "concurrently  -n \"vuecli,server\" -c \"bgBlue.bold,bgGreen.bold\"  \"bnr client_dev\" \"bnr server_dev\"",
     "prodBuild": "cd server&&npm i&&cd ../client&&npm i&&npm run build",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dbMigrate_prod": "bnr dbMigrate_prod"
   },
   "betterScripts": {
     "client_prod": {
