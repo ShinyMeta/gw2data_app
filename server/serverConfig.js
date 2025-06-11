@@ -1,42 +1,54 @@
-
 global.path = require('path');
 // const bodyParser = require('body-parser')
 // const express = require('express')
-const fs = require('fs')
+const fs = require('fs');
 // const helmet = require('helmet')
-const http = require('http')
-const https = require('https')
+const http = require('http');
+// const https = require('https');
 // const path = require('path')
-
-
-
-
-
-
 
 module.exports = {
   development: (app) => {
-    let httpServer = http.createServer(app)
+    let httpServer = http.createServer(app);
 
     httpServer.listen(80, () => {
-      console.log('http listening on port 80')
-    })
+      console.log('http listening on port 80');
+    });
   },
 
   production: (app) => {
-    let httpServer = http.createServer(app)
+    require('greenlock-express')
+      .init({
+        packageRoot: __dirname,
 
-    httpServer.listen(80, () => {
-      console.log('http listening on port 80')
-    })
+        // contact for security and critical bug notices
+        maintainerEmail: 'zach.swalberg@gmail.com',
 
-    const privateKey = fs.readFileSync('C:/server_secrets/SSL/private.key')
-    const certificate = fs.readFileSync('C:/server_secrets/SSL/certificate.crt')
-    const credentials = {key: privateKey, cert: certificate}
-    let httpsServer = https.createServer(credentials, app)
+        // where to look for configuration
+        configDir: './greenlock.d',
 
-    httpsServer.listen(443, () => {
-      console.log('https listening on port 443')
-    })
-  }
-}
+        // whether or not to run at cloudscale
+        cluster: false,
+      })
+      // Serves on 80 and 443
+      // Get's SSL certificates magically!
+      .serve(app);
+
+    // let httpServer = http.createServer(app);
+
+    // httpServer.listen(80, () => {
+    //   console.log('http listening on port 80');
+    // });
+
+    // const privateKey = fs.readFileSync('C:/server_secrets/SSL/private.key');
+    // const certificate = fs.readFileSync(
+    //   'C:/server_secrets/SSL/certificate.crt'
+    // );
+    // const credentials = { key: privateKey, cert: certificate };
+    // let httpsServer = https.createServer(credentials, app);
+
+    // httpsServer.listen(443, () => {
+    //   console.log('https listening on port 443');
+    // });
+  },
+};
